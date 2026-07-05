@@ -25,8 +25,6 @@ public class TaskController {
 
     @PostMapping("/tasks")
     public String saveTask(@ModelAttribute Task task) {
-        System.out.println("Title = " + task.getTitle());
-        System.out.println("Description = " + task.getDescription());
         taskService.save(task);
         return "redirect:/";
     }
