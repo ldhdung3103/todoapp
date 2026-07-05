@@ -287,4 +287,4 @@ https://github.com/ldhdung3103
 
 ## License
 
-This project was created for learning purposes and internship assessment.
+This project is licensed under the MIT License - see the LICENSE file for details.
