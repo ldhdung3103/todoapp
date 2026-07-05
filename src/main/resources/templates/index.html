@@ -7,82 +7,97 @@
 
 <body>
 
-<h1>Todo App</h1>
+<div class="app">
 
-<form th:action="@{/tasks}" th:object="${task}" method="post">
+    <header class="app-header">
+        <h1>Todo App</h1>
+        <p>Manage your tasks with to do list app</p>
+    </header>
 
-    <input
-            type="text"
-            th:field="*{title}"
-            placeholder="Task title"
-            required>
+    <section class="task-form-card">
+        <form th:action="@{/tasks}" th:object="${task}" method="post">
 
-    <br><br>
+            <input type="text"
+                   th:field="*{title}"
+                   placeholder="Task title">
 
-    <textarea
-            th:field="*{description}"
-            placeholder="Description">
-    </textarea>
+            <p class="error"
+               th:if="${#fields.hasErrors('title')}"
+               th:errors="*{title}"></p>
 
-    <br><br>
+            <textarea th:field="*{description}"
+                      placeholder="Description"></textarea>
 
-    <button type="submit">
-        Add Task
-    </button>
+            <p class="error"
+               th:if="${#fields.hasErrors('description')}"
+               th:errors="*{description}"></p>
 
-</form>
+            <button class="primary-btn" type="submit">
+                Add Task
+            </button>
 
-<hr>
+        </form>
+    </section>
 
-<h2>Task List</h2>
+    <section class="filter-bar">
+        <a th:href="@{/}"
+           th:classappend="${status == null} ? 'active' : ''">All</a>
 
-<div th:if="${#lists.isEmpty(tasks)}">
-    <p>No tasks yet. Create your first task 🚀</p>
+        <a th:href="@{/(status='active')}"
+           th:classappend="${status == 'active'} ? 'active' : ''">Active</a>
+
+        <a th:href="@{/(status='completed')}"
+           th:classappend="${status == 'completed'} ? 'active' : ''">Completed</a>
+    </section>
+
+    <section class="task-list">
+        <h2>Task List</h2>
+
+        <div class="empty-state" th:if="${#lists.isEmpty(tasks)}">
+            <p>No tasks yet. Create your first task 🚀</p>
+        </div>
+
+        <div class="task-card" th:each="task : ${tasks}">
+
+            <div class="task-main">
+
+                <form th:action="@{/tasks/{id}/toggle(id=${task.id})}"
+                      method="post">
+                    <button class="toggle-btn" type="submit">
+                        <span th:if="${task.completed}">☑</span>
+                        <span th:unless="${task.completed}">☐</span>
+                    </button>
+                </form>
+
+                <div class="task-content">
+                    <h3 th:text="${task.title}"
+                        th:classappend="${task.completed} ? 'completed' : ''"></h3>
+
+                    <p th:text="${task.description}"></p>
+                </div>
+
+            </div>
+
+            <div class="task-actions">
+                <a class="edit-btn"
+                   th:href="@{/tasks/{id}/edit(id=${task.id})}">
+                    Edit
+                </a>
+
+                <form th:action="@{/tasks/{id}/delete(id=${task.id})}"
+                      method="post">
+                    <button class="delete-btn"
+                            type="submit"
+                            onclick="return confirm('Delete this task?')">
+                        Delete
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </section>
+
 </div>
-
-<ul th:unless="${#lists.isEmpty(tasks)}">
-
-    <li th:each="task : ${tasks}">
-
-        <form th:action="@{/tasks/{id}/toggle(id=${task.id})}"
-                method="post"
-                style="display:inline;">
-
-            <button type="submit">
-
-            <span th:if="${task.completed}">
-                ☑
-            </span>
-
-                <span th:unless="${task.completed}">
-                ☐
-            </span>
-
-            </button>
-
-        </form>
-
-        <span
-                th:text="${task.title}"
-                th:style="${task.completed}
-        ? 'text-decoration: line-through;'
-        : ''">
-    </span>
-
-        <form th:action="@{/tasks/{id}/delete(id=${task.id})}"
-              method="post"
-              style="display:inline;">
-            <button type="submit"
-                    onclick="return confirm('Delete this task?')">
-                Delete
-            </button>
-        </form>
-
-        <p th:text="${task.description}"></p>
-
-    </li>
-
-</ul>
 
 </body>
 </html>
