@@ -1,10 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>todoapp</title>
+    <title>Todo App</title>
 </head>
+
 <body>
-<h1>todoapp</h1>
-<p>Spring Boot is running!</p>
+
+<h1>Todo App</h1>
+
+<form th:action="@{/tasks}" th:object="${task}" method="post">
+
+    <input
+            type="text"
+            th:field="*{title}"
+            placeholder="Task title"
+            required>
+
+    <br><br>
+
+    <textarea
+            th:field="*{description}"
+            placeholder="Description">
+    </textarea>
+
+    <br><br>
+
+    <button type="submit">
+        Add Task
+    </button>
+
+</form>
+
+<hr>
+
+<h2>Task List</h2>
+
+<ul>
+
+    <li th:each="task : ${tasks}">
+
+        <b th:text="${task.title}"></b>
+
+        <p th:text="${task.description}"></p>
+
+    </li>
+
+</ul>
+
 </body>
 </html>
