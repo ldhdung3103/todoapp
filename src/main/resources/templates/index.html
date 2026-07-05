@@ -75,6 +75,9 @@
                     onclick="return confirm('Delete this task?')">
                 Delete
             </button>
+            <a th:href="@{/tasks/{id}/edit(id=${task.id})}">
+                Edit
+            </a>
         </form>
 
         <p th:text="${task.description}"></p>

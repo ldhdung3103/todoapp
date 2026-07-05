@@ -40,4 +40,17 @@ public class TaskController {
         taskService.deleteById(id);
         return "redirect:/";
     }
+
+    @GetMapping("/tasks/{id}/edit")
+    public String editTask(@PathVariable long id, Model model) {
+        Task task = taskService.findById(id);
+        model.addAttribute("task", task);
+        return "edit";
+    }
+
+    @PostMapping("/tasks/{id}/edit")
+    public String updateTask(@PathVariable long id, @ModelAttribute Task task) {
+        taskService.updateTask(id, task);
+        return "redirect:/";
+    }
 }
