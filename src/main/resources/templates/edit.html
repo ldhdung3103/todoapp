@@ -3,41 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Task</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
 <body>
 
-<h1>Edit Task</h1>
+<div class="app">
 
-<form th:action="@{/tasks/{id}/edit(id=${task.id})}"
-      th:object="${task}"
-      method="post">
+    <header class="app-header">
+        <h1>Edit Task</h1>
+        <p>Update your task details</p>
+    </header>
 
-    <input type="text"
-           th:field="*{title}"
-           placeholder="Task title"
-           required>
+    <section class="task-form-card">
+        <form th:action="@{/tasks/{id}/edit(id=${task.id})}"
+              th:object="${task}"
+              method="post">
 
-    <div th:if="${#fields.hasErrors('title')}"
-         th:errors="*{title}">
-    </div>
+            <input type="text"
+                   th:field="*{title}"
+                   placeholder="Task title">
 
-    <br><br>
+            <p class="error"
+               th:if="${#fields.hasErrors('title')}"
+               th:errors="*{title}"></p>
 
-    <textarea th:field="*{description}"
-              placeholder="Description"></textarea>
+            <textarea th:field="*{description}"
+                      placeholder="Description"></textarea>
 
-    <div th:if="${#fields.hasErrors('description')}"
-         th:errors="*{description}">
-    </div>
+            <p class="error"
+               th:if="${#fields.hasErrors('description')}"
+               th:errors="*{description}"></p>
 
-    <br><br>
+            <div class="form-actions">
+                <button class="primary-btn" type="submit">
+                    Save Changes
+                </button>
 
-    <button type="submit">Save</button>
+                <a class="cancel-btn" th:href="@{/}">
+                    Cancel
+                </a>
+            </div>
 
-    <a th:href="@{/}">Cancel</a>
+        </form>
+    </section>
 
-</form>
+</div>
 
 </body>
 </html>
