@@ -17,4 +17,18 @@ public class TaskService {
     public List<Task> findAll() {
         return taskRepository.findAll();
     }
+
+    public Task save(Task task) {
+        return taskRepository.save(task);
+    }
+
+    public void toggleCompleted(long id) {
+        Task task = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found!"));
+        task.setCompleted(!task.isCompleted());
+        taskRepository.save(task);
+    }
+
+    public void deleteById(long id) {
+        taskRepository.deleteById(id);
+    }
 }

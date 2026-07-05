@@ -1,10 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>todoapp</title>
+    <title>Todo App</title>
 </head>
+
 <body>
-<h1>todoapp</h1>
-<p>Spring Boot is running!</p>
+
+<h1>Todo App</h1>
+
+<form th:action="@{/tasks}" th:object="${task}" method="post">
+
+    <input
+            type="text"
+            th:field="*{title}"
+            placeholder="Task title"
+            required>
+
+    <br><br>
+
+    <textarea
+            th:field="*{description}"
+            placeholder="Description">
+    </textarea>
+
+    <br><br>
+
+    <button type="submit">
+        Add Task
+    </button>
+
+</form>
+
+<hr>
+
+<h2>Task List</h2>
+
+<div th:if="${#lists.isEmpty(tasks)}">
+    <p>No tasks yet. Create your first task 🚀</p>
+</div>
+
+<ul th:unless="${#lists.isEmpty(tasks)}">
+
+    <li th:each="task : ${tasks}">
+
+        <form th:action="@{/tasks/{id}/toggle(id=${task.id})}"
+                method="post"
+                style="display:inline;">
+
+            <button type="submit">
+
+            <span th:if="${task.completed}">
+                ☑
+            </span>
+
+                <span th:unless="${task.completed}">
+                ☐
+            </span>
+
+            </button>
+
+        </form>
+
+        <span
+                th:text="${task.title}"
+                th:style="${task.completed}
+        ? 'text-decoration: line-through;'
+        : ''">
+    </span>
+
+        <form th:action="@{/tasks/{id}/delete(id=${task.id})}"
+              method="post"
+              style="display:inline;">
+            <button type="submit"
+                    onclick="return confirm('Delete this task?')">
+                Delete
+            </button>
+        </form>
+
+        <p th:text="${task.description}"></p>
+
+    </li>
+
+</ul>
+
 </body>
 </html>
