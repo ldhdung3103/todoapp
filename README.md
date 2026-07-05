@@ -121,15 +121,15 @@ The project follows the MVC (Model-View-Controller) architecture to keep the cod
 
 ### Home Page
 
-> *![img.png](img.png)*
+> *![img.png](docs/images/img.png)*
 
 ### Edit Task
 
-> *![img_1.png](img_1.png)*
+> *![img_1.png](docs/images/img_1.png)*
 
 ### Validation
 
-> *![img_3.png](img_3.png)*
+> *![img_3.png](docs/images/img_3.png)*
 
 ---
 
