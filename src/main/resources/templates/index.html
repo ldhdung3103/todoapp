@@ -33,6 +33,28 @@
 
 <hr>
 
+<div>
+
+    <a th:href="@{/}">
+        All
+    </a>
+
+    |
+
+    <a th:href="@{/(status='active')}">
+        Active
+    </a>
+
+    |
+
+    <a th:href="@{/(status='completed')}">
+        Completed
+    </a>
+
+</div>
+
+<br>
+
 <h2>Task List</h2>
 
 <div th:if="${#lists.isEmpty(tasks)}">

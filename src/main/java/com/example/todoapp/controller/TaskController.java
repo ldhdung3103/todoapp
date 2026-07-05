@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class TaskController {
@@ -17,9 +18,17 @@ public class TaskController {
     }
 
     @GetMapping("/")
-    public String home(Model model) {
-        model.addAttribute("tasks", taskService.findAll());
+    public String home(@RequestParam(required = false) String status, Model model) {
+        if ("active".equals(status)) {
+            model.addAttribute("tasks", taskService.findAllByCompleted(false));
+        } else if ("completed".equals(status)) {
+            model.addAttribute("tasks", taskService.findAllByCompleted(true));
+        } else {
+            model.addAttribute("tasks", taskService.findAll());
+        }
+
         model.addAttribute("task", new Task());
+        model.addAttribute("status", status);
         return "index";
     }
 

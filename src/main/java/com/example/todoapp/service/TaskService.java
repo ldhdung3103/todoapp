@@ -42,4 +42,8 @@ public class TaskService {
         existingTask.setDescription(updatedTask.getDescription());
         return taskRepository.save(existingTask);
     }
+
+    public List<Task> findAllByCompleted(boolean completed) {
+        return taskRepository.findByCompleted(completed);
+    }
 }
