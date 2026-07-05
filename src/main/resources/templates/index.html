@@ -16,12 +16,20 @@
             placeholder="Task title"
             required>
 
+    <div th:if="${#fields.hasErrors('title')}"
+         th:errors="*{title}">
+    </div>
+
     <br><br>
 
     <textarea
             th:field="*{description}"
             placeholder="Description">
     </textarea>
+
+    <div th:if="${#fields.hasErrors('description')}"
+         th:errors="*{description}">
+    </div>
 
     <br><br>
 
@@ -32,6 +40,28 @@
 </form>
 
 <hr>
+
+<div>
+
+    <a th:href="@{/}">
+        All
+    </a>
+
+    |
+
+    <a th:href="@{/(status='active')}">
+        Active
+    </a>
+
+    |
+
+    <a th:href="@{/(status='completed')}">
+        Completed
+    </a>
+
+</div>
+
+<br>
 
 <h2>Task List</h2>
 
@@ -75,6 +105,9 @@
                     onclick="return confirm('Delete this task?')">
                 Delete
             </button>
+            <a th:href="@{/tasks/{id}/edit(id=${task.id})}">
+                Edit
+            </a>
         </form>
 
         <p th:text="${task.description}"></p>
