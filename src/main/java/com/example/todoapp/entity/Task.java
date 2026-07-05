@@ -1,5 +1,7 @@
 package com.example.todoapp.entity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
@@ -9,9 +11,12 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotBlank(message = "Task title is required!")
+    @Size(min = 3, max = 50, message = "Task title must be between 3 and 50 characters!")
     @Column(nullable = false)
     private String title;
 
+    @Size(max = 500, message = "Description must not exceed 500 characters!")
     @Column(columnDefinition = "TEXT")
     private String description;
 

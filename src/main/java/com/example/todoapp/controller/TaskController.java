@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import jakarta.validation.Valid;
+import org.springframework.validation.BindingResult;
 
 @Controller
 public class TaskController {
@@ -33,7 +35,12 @@ public class TaskController {
     }
 
     @PostMapping("/tasks")
-    public String saveTask(@ModelAttribute Task task) {
+    public String saveTask(@Valid @ModelAttribute("task") Task task, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("tasks", taskService.findAll());
+            model.addAttribute("status", null);
+            return "index";
+        }
         taskService.save(task);
         return "redirect:/";
     }
@@ -58,7 +65,11 @@ public class TaskController {
     }
 
     @PostMapping("/tasks/{id}/edit")
-    public String updateTask(@PathVariable long id, @ModelAttribute Task task) {
+    public String updateTask(@PathVariable long id, @Valid @ModelAttribute("task") Task task, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            task.setId(id);
+            return "edit";
+        }
         taskService.updateTask(id, task);
         return "redirect:/";
     }

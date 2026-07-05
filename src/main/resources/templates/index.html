@@ -16,12 +16,20 @@
             placeholder="Task title"
             required>
 
+    <div th:if="${#fields.hasErrors('title')}"
+         th:errors="*{title}">
+    </div>
+
     <br><br>
 
     <textarea
             th:field="*{description}"
             placeholder="Description">
     </textarea>
+
+    <div th:if="${#fields.hasErrors('description')}"
+         th:errors="*{description}">
+    </div>
 
     <br><br>
 
