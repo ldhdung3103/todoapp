@@ -35,7 +35,11 @@
 
 <h2>Task List</h2>
 
-<ul>
+<div th:if="${#lists.isEmpty(tasks)}">
+    <p>No tasks yet. Create your first task 🚀</p>
+</div>
+
+<ul th:unless="${#lists.isEmpty(tasks)}">
 
     <li th:each="task : ${tasks}">
 
@@ -67,7 +71,8 @@
         <form th:action="@{/tasks/{id}/delete(id=${task.id})}"
               method="post"
               style="display:inline;">
-            <button type="submit">
+            <button type="submit"
+                    onclick="return confirm('Delete this task?')">
                 Delete
             </button>
         </form>
