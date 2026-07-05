@@ -21,4 +21,10 @@ public class TaskService {
     public Task save(Task task) {
         return taskRepository.save(task);
     }
+
+    public void toggleCompleted(long id) {
+        Task task = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found!"));
+        task.setCompleted(!task.isCompleted());
+        taskRepository.save(task);
+    }
 }

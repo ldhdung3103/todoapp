@@ -39,7 +39,31 @@
 
     <li th:each="task : ${tasks}">
 
-        <b th:text="${task.title}"></b>
+        <form
+                th:action="@{/tasks/{id}/toggle(id=${task.id})}"
+                method="post"
+                style="display:inline;">
+
+            <button type="submit">
+
+            <span th:if="${task.completed}">
+                ☑
+            </span>
+
+                <span th:unless="${task.completed}">
+                ☐
+            </span>
+
+            </button>
+
+        </form>
+
+        <span
+                th:text="${task.title}"
+                th:style="${task.completed}
+        ? 'text-decoration: line-through;'
+        : ''">
+    </span>
 
         <p th:text="${task.description}"></p>
 

@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class TaskController {
@@ -30,4 +31,9 @@ public class TaskController {
         return "redirect:/";
     }
 
+    @PostMapping("/tasks/{id}/toggle")
+    public String toggleTask(@PathVariable long id) {
+        taskService.toggleCompleted(id);
+        return "redirect:/";
+    }
 }
