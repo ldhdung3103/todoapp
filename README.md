@@ -389,28 +389,10 @@ Although the required features have been completed, the following improvements c
 - Search tasks by keyword
 - Pagination
 - Sorting
-- Docker support
 - Unit testing
 - Spring Security authentication
 - REST API
 - Deploy to cloud platform
-
----
-
-## Learning Outcomes
-
-This project helped practice:
-
-- Spring Boot fundamentals
-- MVC Architecture
-- Spring Data JPA
-- Thymeleaf
-- Form Validation
-- CRUD operations
-- Git & GitHub Workflow
-- Feature Branch development
-- Merge Conflict resolution
-- Responsive Web Design
 
 ---
 
