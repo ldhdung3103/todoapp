@@ -71,26 +71,33 @@ A simple and responsive Todo List web application built with **Spring Boot** and
 ## Project Structure
 
 ```text
-src
-└── main
-    ├── java
-    │   └── com.example.todoapp
-    │       ├── controller
-    │       ├── entity
-    │       ├── repository
-    │       ├── service
-    │       └── TodoappApplication.java
-    │
-    └── resources
-        ├── static
-        │   └── css
-        │       └── style.css
-        │
-        ├── templates
-        │   ├── index.html
-        │   └── edit.html
-        │
-        └── application.properties
+todo-app
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   └── com.example.todoapp
+│   │   │       ├── controller
+│   │   │       ├── entity
+│   │   │       ├── repository
+│   │   │       ├── service
+│   │   │       └── TodoappApplication.java
+│   │   └── resources
+│   │       ├── static
+│   │       │   └── css
+│   │       │       └── style.css
+│   │       ├── templates
+│   │       │   ├── index.html
+│   │       │   └── edit.html
+│   │       └── application.properties
+│   └── test
+├── .dockerignore
+├── .env.example
+├── .gitignore
+├── compose.yaml
+├── Dockerfile
+├── mvnw
+├── mvnw.cmd
+└── pom.xml
 ```
 
 ---
@@ -135,60 +142,192 @@ The project follows the MVC (Model-View-Controller) architecture to keep the cod
 
 ## Installation
 
+### Prerequisites
+
+Before running the project, install:
+
+- Java 17 or later
+- Docker Desktop
+- Git
+
+Docker Desktop must be running before starting the database container.
+
 ### 1. Clone the repository
 
 ```bash
 git clone https://github.com/ldhdung3103/todo-app.git
+cd todo-app
 ```
 
-### 2. Open the project
+### 2. Create the environment file
 
-Open the project using **IntelliJ IDEA**.
+Copy `.env.example` to a new file named `.env`.
 
-### 3. Create MySQL database
+On Git Bash, macOS, or Linux:
 
-```sql
-CREATE DATABASE todo_db;
+```bash
+cp .env.example .env
 ```
 
-### 4. Configure database
+On Windows Command Prompt:
 
-Edit the following file:
-
+```cmd
+copy .env.example .env
 ```
+
+Example `.env` file:
+
+```env
+MYSQL_DATABASE=todo_db
+MYSQL_USER=todo_user
+MYSQL_PASSWORD=todo_password
+MYSQL_ROOT_PASSWORD=root_password
+```
+
+The `.env` file contains local database credentials and is excluded from Git by `.gitignore`.
+
+### 3. Start MySQL with Docker Compose
+
+Run:
+
+```bash
+docker compose up -d
+```
+
+Docker Compose will:
+
+- Download the MySQL 8 image when required
+- Create the MySQL container
+- Create the `todo_db` database
+- Expose MySQL on host port `3307`
+- Store database data in a persistent Docker volume
+
+Check the container status:
+
+```bash
+docker compose ps
+```
+
+The database should be available at:
+
+```text
+Host: localhost
+Port: 3307
+Database: todo_db
+```
+
+### 4. Configure Spring Boot
+
+Open:
+
+```text
 src/main/resources/application.properties
 ```
 
 Example configuration:
 
 ```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/todo_db
-spring.datasource.username=YOUR_USERNAME
-spring.datasource.password=YOUR_PASSWORD
+spring.datasource.url=jdbc:mysql://localhost:3307/todo_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+spring.datasource.username=todo_user
+spring.datasource.password=todo_password
 
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
 ```
 
-### 5. Run the application
+The username and password must match the values configured in `.env`.
 
-Using Maven:
+### 5. Run the Spring Boot application
+
+Using the Maven Wrapper on Git Bash, macOS, or Linux:
 
 ```bash
-mvn spring-boot:run
+./mvnw spring-boot:run
 ```
 
-Or simply run:
+Using Windows Command Prompt or PowerShell:
 
-```
-TodoappApplication.java
+```powershell
+.\mvnw.cmd spring-boot:run
 ```
 
-### 6. Open in browser
+The application can also be started by running `TodoappApplication.java` from IntelliJ IDEA.
 
-```
+### 6. Open the application
+
+Open:
+
+```text
 http://localhost:8080
 ```
+
+---
+
+## Docker Commands
+
+### Start the database container
+
+```bash
+docker compose up -d
+```
+
+### View container status
+
+```bash
+docker compose ps
+```
+
+### View MySQL logs
+
+```bash
+docker compose logs db
+```
+
+Follow logs continuously:
+
+```bash
+docker compose logs -f db
+```
+
+### Restart the container
+
+```bash
+docker compose restart
+```
+
+### Stop and remove the container
+
+```bash
+docker compose down
+```
+
+The database data remains stored in the Docker volume.
+
+### Stop the container and delete database data
+
+```bash
+docker compose down -v
+```
+
+> Warning: The `-v` option permanently deletes the Docker volume and all database data stored in it.
+
+---
+
+## Running Without Docker
+
+To run MySQL directly on the local machine:
+
+1. Start the local MySQL server.
+2. Create the database:
+
+```sql
+CREATE DATABASE todo_db;
+```
+
+3. Change the datasource port in `application.properties` from `3307` to `3306`.
+4. Configure the correct local MySQL username and password.
+5. Run the Spring Boot application.
 
 ---
 
